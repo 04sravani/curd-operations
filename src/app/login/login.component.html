@@ -1,0 +1,112 @@
+<header>
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand" href="#">My Bookings</a>
+  </nav>
+
+</header>
+<!-- <main role="main">
+  <div class="album py-5 bg-light">
+    <div class="container">
+      <ng-container class="text-center">
+        <label for="password" class="text-center">Login</label>
+        <div class="row">
+          <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+            <div class="form-group">
+                <input type="text" class="form-control" name="email" placeholder="Email" [(ngModel)]="model.email" #email="ngModel" [ngClass]="{ 'is-invalid': f.submitted && email.invalid }" required email />
+                <div *ngIf="f.submitted && email.invalid" class="invalid-feedback">
+                    <div *ngIf="email.errors.required">Email is required</div>
+                    <div *ngIf="email.errors.email">Email must be a valid email address</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" name="password" placeholder="password" [(ngModel)]="model.password" #password="ngModel" [ngClass]="{ 'is-invalid': f.submitted && password.invalid }" required minlength="6" />
+                <div *ngIf="f.submitted && password.invalid" class="invalid-feedback">
+                    <div *ngIf="password.errors.required">Password is required</div>
+                    <div *ngIf="password.errors.minlength">Password must be at least 6 characters</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary">Login</button>
+            </div>
+        </form>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+</main> -->
+<!-- <div class="back">
+  <div class="div-center">
+    <div class="content">
+      <h3 class="text-center">Login</h3>
+      <hr>
+      <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+        <div class="form-group">
+          <input type="text" class="form-control" name="email" placeholder="Email" [(ngModel)]="model.email" #email="ngModel" [ngClass]="{ 'is-invalid': f.submitted && email.invalid }" required email />
+          <div *ngIf="f.submitted && email.invalid" class="invalid-feedback">
+              <div *ngIf="email.errors.required">Email is required</div>
+              <div *ngIf="email.errors.email">Email must be a valid email address</div>
+          </div>
+      </div>
+      <div class="form-group">
+          <input type="password" class="form-control" name="password" placeholder="password" [(ngModel)]="model.password" #password="ngModel" [ngClass]="{ 'is-invalid': f.submitted && password.invalid }" required minlength="6" />
+          <div *ngIf="f.submitted && password.invalid" class="invalid-feedback">
+              <div *ngIf="password.errors.required">Password is required</div>
+              <div *ngIf="password.errors.minlength">Password must be at least 6 characters</div>
+          </div>
+      </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+        <hr>
+      </form>
+    </div>
+  </div>
+</div> -->
+<div class="container-fluid">
+
+  <div class="simple-login-container">
+    <h2>Login</h2>
+    <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+      <div class="row">
+        <div class="col-md-12 form-group mb-10">
+          <input type="text" class="form-control" name="email" placeholder="Email ID" [(ngModel)]="model.email"
+            #email="ngModel" [ngClass]="{ 'is-invalid': f.submitted && email.invalid }" required email />
+          <div *ngIf="f.submitted && email.invalid" class="invalid-feedback">
+            <div *ngIf="email.errors.required">Email is required</div>
+            <div *ngIf="email.errors.email">Email must be a valid email address</div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 form-group mb-30">
+          <div class="form-group">
+            <input type="password" class="form-control" name="Password" placeholder="password"
+              [(ngModel)]="model.password" #password="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && password.invalid }" required minlength="6" />
+            <div *ngIf="f.submitted && password.invalid" class="invalid-feedback">
+              <div *ngIf="password.errors.required">Password is required</div>
+              <div *ngIf="password.errors.minlength">Password must be at least 6 characters</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 form-group">
+          <input type="submit" class="btn btn-block btn-login" placeholder="Login">
+        </div>
+      </div>
+    </form>
+  </div>
+
+</div>
+<div class="container-fluid footerlog">
+  <div class="row">
+    <div class="col-xs-12 col-sm-6 col-md-6">
+      <div style="float:left; white-space:nowrap;"><img src="assets/images/logo-1.png" type="image/svg+xml"
+          class="img-responsive"></div>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+      <div style="float:right; padding-right:20px;"><a href="#">Privacy Notice</a> | <a href="#">Cookie Policy </a>|
+        Terms of Use 2020 Persistent Systems</div>
+    </div>
+  </div>
+</div>

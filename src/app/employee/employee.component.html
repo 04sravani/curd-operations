@@ -1,0 +1,320 @@
+<header>
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand">My Bookings</a>
+    <div class="navbar-nav ml-auto">
+      <a class="nav-item nav-link active"><span class="li-sp">Employee</span></a>
+      <a class="nav-item nav-link ml-4 mr-2"><img src="assets/images/bell-icon.png"></a>
+      <a class="nav-item nav-link ml-4 mr-2"><img src="assets/images/profile_1.png" [routerLink]="['/']" routerLinkActive="router-link-active" >
+
+      </a>
+    </div>
+  </nav>
+</header>
+
+
+<!-- Employee datab Body Content Starts -->
+
+<div class="container-fluid mt-70">
+  <div class="row pt-2">
+    <div class="col-md-4">
+      <h3 class="head-h3">Employee Data</h3>
+    </div>
+    <div class="col-md-4"></div>
+    <div class="col-md-4 text-right"><button type="button" class="btn btn-primary" data-target=""
+        (click)="openModal(true)">
+        Add New Employee
+      </button>
+    </div>
+  </div>
+
+  <div class="table mt-4 example-container mat-elevation-z8" *ngIf="employeeService.employeeData.length > 0">
+    <mat-table [dataSource]="dataSource" matSort>
+
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="firstName">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> FIRST NAME </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.firstName}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="lastName">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> LAST NAME </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.lastName}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="gender">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> GENDER </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.gender}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="grade">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> GRADE </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.grade}} %</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="odc">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> ODC/NON ODC </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.odc}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="bu">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> BU </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.bu}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="project">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> PROJECT </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.project}} </mat-cell>
+      </ng-container>
+
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef> ACTIONS </mat-header-cell>
+        <mat-cell *matCellDef="let row ;let i = index">
+          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="editData(row, i)">
+              <mat-icon>edit</mat-icon>
+              <span>Edit</span>
+            </button>
+            <button mat-menu-item (click)="active(row, i)">
+              <mat-icon>menu</mat-icon>
+              <span>{{row.status === 1?'In Activate': 'Active'}}</span>
+            </button>
+            <button mat-menu-item (click)="deleteRecord(i)">
+              <mat-icon>delete</mat-icon>
+              <span>Delete</span>
+            </button>
+          </mat-menu>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;">
+      </mat-row>
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+  </div>
+</div>
+
+<!-- Employee datab Body Content Starts -->
+
+<!-- Add Employee dailog box starts-->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCloseHandled()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <ng-container *ngIf="isCreate">
+        <form name="form" (ngSubmit)="f.form.valid && onSubmit(model, f)" #f="ngForm" novalidate>
+          <div class="modal-body fh-modal">
+            <div class="form-group">
+              <label for="id">ID</label>
+              <input type="number" class="form-control" name="id" (input)="changeInputId(model.id)"
+                [(ngModel)]="model.id" #id="ngModel" [ngClass]="{ 'is-invalid': (id.touched && id.invalid)  }" required
+                pattern="[0-9 ]*" />
+              <div *ngIf="f.touched && id.invalid" class="invalid-feedback">
+                <div *ngIf="id.errors.required">Id is required</div>
+                <div *ngIf="id.errors.pattern">Id must be a valid id</div>
+              </div>
+              <div class="id_validation" *ngIf="idExists">
+                must be a valid id
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="firstName">First Name</label>
+              <input type="text" class="form-control" name="firstName" [(ngModel)]="model.firstName"
+                #firstName="ngModel" [ngClass]="{ 'is-invalid': firstName.touched && firstName.invalid }" required />
+              <div *ngIf="f.touched && firstName.invalid" class="invalid-feedback">
+                <div *ngIf="firstName.errors.required">First Name is required</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last Name</label>
+              <input type="text" class="form-control" name="lastName" [(ngModel)]="model.lastName" #lastName="ngModel"
+                [ngClass]="{ 'is-invalid': lastName.touched && lastName.invalid }" required />
+              <div *ngIf="f.touched && lastName.invalid" class="invalid-feedback">
+                <div *ngIf="lastName.errors.required">Last Name is required</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="grade">Gender</label>
+              <select class="form-control" name="gender" id="gender" [(ngModel)]="model.gender">
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="grade">Grade</label>
+              <input type="text" class="form-control" name="grade" [(ngModel)]="model.grade" #grade="ngModel"
+                [ngClass]="{ 'is-invalid': grade.touched && grade.invalid }" required pattern="[0-9. ]*" />
+              <div *ngIf="f.touched && grade.invalid" class="invalid-feedback">
+                <div *ngIf="grade.errors.required">Grade is required</div>
+                <div *ngIf="grade.errors.pattern">Grade must be a valid number</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="odc">ODC/Non ODC</label>
+              <select class="form-control" class="form-control" name="odc" id="odc" [(ngModel)]="model.odc">
+                <option [value]="undefined" selected>--- Selec ODC/ Non ODC ---</option>
+                <option value="ODC">ODC</option>
+                <option value="Non ODC">Non ODC</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="bu">BU</label>
+              <input type="text" class="form-control" name="bu" [(ngModel)]="model.bu" #bu="ngModel" />
+            </div>
+            <div class="form-group">
+              <label for="project">PROJECT</label>
+              <input type="text" class="form-control" name="project" [(ngModel)]="model.project" #project="ngModel" />
+            </div>
+            <input type="hidden" class="form-control" name="status" [(ngModel)]="model.status" value="1" />
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="onCloseHandled()"
+              data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" [disabled]="f.invalid || idExists">Add</button>
+          </div>
+        </form>
+      </ng-container>
+    </div>
+  </div>
+</div>
+<!-- Add Employee dailog box starts-->
+
+<!-- Edit Employee dailog box starts-->
+<div class="modal" id="edit_form" tabindex="-1" role="dialog" [ngStyle]="{'display':editDisplay}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCloseHandled()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmitEdit(registerForm.value, registerForm)">
+        <div class="modal-body fh-modal">
+          <div class="form-group">
+            <label for="id">ID</label>
+            <input type="number" class="form-control" formControlName="id"
+              (input)="changeInputId(registerForm.value.id)"
+              [ngClass]="{ 'is-invalid': ffff.id.touched && ffff.id.errors }" disabled="true" />
+            <div *ngIf="ffff.id.touched && ffff.id.errors" class="invalid-feedback">
+              <div *ngIf="ffff.id.errors.required">Id is required</div>
+              <div *ngIf="ffff.id.errors.pattern">Id must be a valid id</div>
+            </div>
+            <div class="id_validation" *ngIf="idExists">
+              Id already exists
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" formControlName="firstName" class="form-control"
+              [ngClass]="{ 'is-invalid': ffff.firstName.touched && ffff.firstName.errors }" />
+            <div *ngIf="ffff.firstName.touched && ffff.firstName.errors" class="invalid-feedback">
+              <div *ngIf="ffff.firstName.errors.required">First Name is required</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" formControlName="lastName" class="form-control"
+              [ngClass]="{ 'is-invalid': ffff.lastName.touched && ffff.lastName.errors }" />
+            <div *ngIf="ffff.lastName.touched && ffff.lastName.errors" class="invalid-feedback">
+              <div *ngIf="ffff.lastName.errors.required">Last Name is required</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="grade">Gender</label>
+            <select class="form-control" name="gender" id="gender" formControlName="gender">
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="grade">Grade</label>
+            <input type="text" class="form-control" name="grade" formControlName="grade"
+              [ngClass]="{ 'is-invalid': ffff.grade.touched && ffff.grade.errors }" pattern="[0-9. ]*" />
+            <div *ngIf="ffff.grade.touched && ffff.grade.errors" class="invalid-feedback">
+              <div *ngIf="ffff.grade.errors.required">Grade is required</div>
+              <div *ngIf="ffff.grade.errors.pattern">Grade must be a valid number</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="odc">ODC/Non ODC</label>
+            <select class="form-control" class="form-control" formControlName="odc">
+              <option [value]="undefined" selected>--- Selec ODC/ Non ODC ---</option>
+              <option value="ODC">ODC</option>
+              <option value="Non ODC">Non ODC</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="bu">BU</label>
+            <input type="text" class="form-control" name="bu" formControlName="bu" />
+          </div>
+          <div class="form-group">
+            <label for="project">PROJECT</label>
+            <input type="text" class="form-control" name="project" formControlName="project" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="onCloseHandled()" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid">Update</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- Add Employee dailog box starts-->
+
+
+<!-- Delete  Dialouge box stats-->
+<div id="delete_modal" class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':deletePopup}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure want to delete. This action can not be undone
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeDeletePupup()">No</button>
+        <button type="button" class="btn btn-primary" (click)="deleteRecored()">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Delete  Dialouge box stats-->
+
+
+<div class="row">
+  <div class="col-md-12">
+    &nbsp;
+  </div>
+</div>
+
+<div class="footerlog">
+  <div class="row">
+    <div class="col-xs-12 col-sm-6 col-md-6">
+      <div style="float:left; white-space:nowrap;"><img src="assets/images/logo-1.png" type="image/svg+xml"
+          class="img-responsive"></div>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+      <div style="float:right; padding-right:20px;"><a href="#">Privacy Notice</a> | <a href="#">Cookie Policy </a>|
+        Terms of Use 2020 Persistent Systems</div>
+    </div>
+  </div>
+</div>
