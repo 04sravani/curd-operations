@@ -8,9 +8,10 @@ import { AppComponent } from './app.component';
 import { EmployeeComponent } from './employee/employee.component';
 import { LoginComponent } from './login/login.component';
 import { NgMaterialModule } from './ng-material-module/ng-material-module.module';
+import { SonyComponent } from './sony/sony.component';
 
 @NgModule({
-  declarations: [AppComponent, EmployeeComponent, LoginComponent],
+  declarations: [AppComponent, EmployeeComponent, LoginComponent, SonyComponent],
   imports: [
     BrowserModule,
     CommonModule,
